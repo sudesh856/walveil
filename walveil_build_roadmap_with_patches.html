@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>walveil — Build Roadmap</title>
+<style>
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161a;
+    --bg3: #1a1e24;
+    --bg4: #21262e;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e2e4e8;
+    --text2: #8b9099;
+    --text3: #5a6070;
+    --accent: #4f8ef7;
+    --accent2: #6ee7b7;
+    --accent3: #f59e0b;
+    --accent4: #f87171;
+    --accent5: #a78bfa;
+    --accent6: #fb923c;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,18,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0; padding: 0 2rem;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    color: var(--text2); text-decoration: none; font-size: 12px; font-weight: 500;
+    padding: 0.85rem 1rem; white-space: nowrap; border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s; letter-spacing: 0.03em;
+  }
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .hero { padding: 5rem 2rem 4rem; max-width: 900px; margin: 0 auto; text-align: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2);
+    color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; letter-spacing: -0.04em;
+    line-height: 1; margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #e2e4e8 0%, #8b9099 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub { font-size: 1rem; color: var(--text2); max-width: 600px; margin: 1.5rem auto 2.5rem; line-height: 1.7; }
+  .hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .tag { font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border2); color: var(--text2); background: var(--bg2); }
+  .tag.blue { border-color: rgba(79,142,247,0.3); color: var(--accent); background: rgba(79,142,247,0.06); }
+  .tag.green { border-color: rgba(110,231,183,0.3); color: var(--accent2); background: rgba(110,231,183,0.06); }
+  .tag.amber { border-color: rgba(245,158,11,0.3); color: var(--accent3); background: rgba(245,158,11,0.06); }
+  .tag.purple { border-color: rgba(167,139,250,0.3); color: var(--accent5); background: rgba(167,139,250,0.06); }
+  .section { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+  .section-header { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .phase-number { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 6px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 4px; }
+  .ph-0 { background: rgba(91,91,91,0.15); color: #8b9099; border: 1px solid rgba(91,91,91,0.25); }
+  .ph-1 { background: rgba(79,142,247,0.1); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); }
+  .ph-2 { background: rgba(110,231,183,0.1); color: var(--accent2); border: 1px solid rgba(110,231,183,0.2); }
+  .ph-3 { background: rgba(245,158,11,0.1); color: var(--accent3); border: 1px solid rgba(245,158,11,0.2); }
+  .ph-4 { background: rgba(248,113,113,0.1); color: var(--accent4); border: 1px solid rgba(248,113,113,0.2); }
+  .ph-5 { background: rgba(167,139,250,0.1); color: var(--accent5); border: 1px solid rgba(167,139,250,0.2); }
+  .ph-6 { background: rgba(251,146,60,0.1); color: var(--accent6); border: 1px solid rgba(251,146,60,0.2); }
+  .ph-sec { background: rgba(251,146,60,0.1); color: var(--accent6); border: 1px solid rgba(251,146,60,0.2); }
+  .section-title { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+  .section-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.6; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; transition: border-color 0.2s; }
+  .card:hover { border-color: var(--border2); }
+  .card-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .card-title .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-blue { background: var(--accent); }
+  .dot-green { background: var(--accent2); }
+  .dot-amber { background: var(--accent3); }
+  .dot-red { background: var(--accent4); }
+  .dot-purple { background: var(--accent5); }
+  .dot-orange { background: var(--accent6); }
+  .dot-gray { background: var(--text3); }
+  .dot-patch { background: #f0abfc; }
+  .card p { font-size: 0.825rem; color: var(--text2); line-height: 1.7; margin-bottom: 0.75rem; }
+  .card p:last-child { margin-bottom: 0; }
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--text3); min-width: 28px; padding-top: 2px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .step-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.65; }
+  pre, code { font-family: var(--mono); }
+  .code-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 0.75rem 0; overflow-x: auto; }
+  .code-block code { font-size: 12px; color: #abb2bf; line-height: 1.8; display: block; }
+  .ck { color: #c678dd; }
+  .cs { color: #98c379; }
+  .cc { color: #e5c07b; }
+  .cm { color: #5c6370; font-style: italic; }
+  .cf { color: #61afef; }
+  .cn { color: #d19a66; }
+  .cp { color: #56b6c2; }
+  .file-tree { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 0.75rem 0; font-family: var(--mono); font-size: 12px; line-height: 1.9; }
+  .ft-dir { color: var(--accent); font-weight: 600; }
+  .ft-file { color: var(--text2); }
+  .ft-comment { color: var(--text3); margin-left: 1rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .sec-card { background: rgba(248,113,113,0.04); border: 1px solid rgba(248,113,113,0.2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; }
+  .sec-card .card-title { color: var(--accent4); }
+  .sec-card p { color: var(--text2); }
+  .warn-card { background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; }
+  .warn-card .card-title { color: var(--accent3); }
+
+  /* PATCH CARDS — pink/fuchsia accent, visually distinct */
+  .patch-card {
+    background: rgba(240,171,252,0.04);
+    border: 1px solid rgba(240,171,252,0.25);
+    border-left: 3px solid #d946ef;
+    border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;
+    position: relative;
+  }
+  .patch-card::before {
+    content: 'PATCH';
+    position: absolute; top: -1px; right: 16px;
+    font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+    background: #d946ef; color: #fff; padding: 2px 8px; border-radius: 0 0 5px 5px;
+  }
+  .patch-card .card-title { color: #f0abfc; }
+  .patch-card p { color: var(--text2); }
+  .patch-card .code-block { border-color: rgba(240,171,252,0.15); }
+
+  .table-wrap { overflow-x: auto; margin: 0.75rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  th { text-align: left; padding: 0.6rem 1rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border2); }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.55; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--text); font-weight: 500; font-family: var(--mono); font-size: 11px; }
+  .timeline { display: flex; gap: 0; border-radius: 8px; overflow: hidden; height: 8px; margin: 1rem 0 2rem; border: 1px solid var(--border); }
+  .tl-seg { height: 100%; }
+  .checklist { list-style: none; }
+  .checklist li { font-size: 0.825rem; color: var(--text2); padding: 0.4rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before { content: ''; display: inline-block; width: 14px; height: 14px; flex-shrink: 0; border: 1px solid var(--border2); border-radius: 3px; margin-top: 1px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+  footer { text-align: center; padding: 3rem 2rem; color: var(--text3); font-size: 0.75rem; border-top: 1px solid var(--border); }
+  footer strong { color: var(--text2); }
+  .ic { font-family: var(--mono); font-size: 11px; padding: 1px 5px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 4px; color: var(--accent2); }
+  html { scroll-behavior: smooth; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .badge { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+  .badge-red { background: rgba(248,113,113,0.1); color: var(--accent4); border: 1px solid rgba(248,113,113,0.2); }
+  .badge-green { background: rgba(110,231,183,0.1); color: var(--accent2); border: 1px solid rgba(110,231,183,0.2); }
+  .badge-blue { background: rgba(79,142,247,0.1); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); }
+  .badge-amber { background: rgba(245,158,11,0.1); color: var(--accent3); border: 1px solid rgba(245,158,11,0.2); }
+  .badge-purple { background: rgba(167,139,250,0.1); color: var(--accent5); border: 1px solid rgba(167,139,250,0.2); }
+  .badge-patch { background: rgba(217,70,239,0.1); color: #f0abfc; border: 1px solid rgba(217,70,239,0.3); }
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <a href="#overview" class="active">Overview</a>
+  <a href="#security">Security</a>
+  <a href="#phase0">Phase 0</a>
+  <a href="#phase1">Phase 1</a>
+  <a href="#phase2">Phase 2</a>
+  <a href="#phase3">Phase 3</a>
+  <a href="#phase4">Phase 4</a>
+  <a href="#phase5">Phase 5</a>
+  <a href="#phase6">Phase 6</a>
+  <a href="#appendix-a">Appendix A</a>
+  <a href="#appendix-b">Appendix B</a>
+  <a href="#appendix-c">Appendix C</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div class="hero-badge">
+    <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>
+    Complete Build Roadmap
+  </div>
+  <h1>walveil</h1>
+  <p class="hero-sub">
+    A production-grade Change Data Capture engine for PostgreSQL, written in Go.
+    Speaks the native replication protocol. Streams WAL changes in real time.
+    Zero JVM. Zero Kafka. Zero ceremony. Just a binary.
+  </p>
+  <div class="hero-tags">
+    <span class="tag blue">Go 1.22+</span>
+    <span class="tag green">pgoutput protocol</span>
+    <span class="tag amber">Zero Dependencies</span>
+    <span class="tag">Webhooks</span>
+    <span class="tag">Redis Streams</span>
+    <span class="tag purple">Single Binary</span>
+    <span class="tag">Docker Ready</span>
+  </div>
+</div>
+
+<!-- TIMELINE BAR -->
+<div class="section" style="padding-top:0;padding-bottom:0;">
+  <div class="timeline">
+    <div class="tl-seg" style="width:8%;background:#5a6070;" title="Phase 0"></div>
+    <div class="tl-seg" style="width:20%;background:var(--accent);" title="Phase 1"></div>
+    <div class="tl-seg" style="width:15%;background:var(--accent2);" title="Phase 2"></div>
+    <div class="tl-seg" style="width:17%;background:var(--accent3);" title="Phase 3"></div>
+    <div class="tl-seg" style="width:15%;background:var(--accent4);" title="Phase 4"></div>
+    <div class="tl-seg" style="width:15%;background:var(--accent5);" title="Phase 5"></div>
+    <div class="tl-seg" style="width:10%;background:var(--accent6);" title="Phase 6"></div>
+  </div>
+  <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:11px;color:var(--text3);margin-bottom:2rem;">
+    <span>P0: Foundation</span>
+    <span style="color:var(--accent)">P1: WAL Core</span>
+    <span style="color:var(--accent2)">P2: Delivery Layer</span>
+    <span style="color:var(--accent3)">P3: Observability</span>
+    <span style="color:var(--accent4)">P4: Security Hardening</span>
+    <span style="color:var(--accent5)">P5: Production Readiness</span>
+    <span style="color:var(--accent6)">P6: Ecosystem</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECURITY SECTION -->
+<div class="section" id="security">
+  <div class="section-header">
+    <span class="phase-number ph-sec">SECURITY</span>
+    <div>
+      <div class="section-title">Critical Security Considerations</div>
+      <div class="section-desc">These are not afterthoughts. Each item below maps to a specific implementation point in the phases. Read this section first — it informs every architectural decision.</div>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-01 — Replication Credentials Never in Config Plaintext</div>
+    <p>Never store <span class="ic">replication_password</span> in plaintext YAML/TOML. At minimum: support reading from environment variables with <span class="ic">$ENV_VAR</span> interpolation. Preferably: support reading from files (Docker secrets, Kubernetes secrets). Never log credentials. Mask them in debug output.</p>
+    <p>In Phase 0, design the config struct with a <span class="ic">SecretRef</span> type that abstracts the source. In Phase 4, add a secret resolution layer that supports env, file, and Vault/SOPS.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-02 — Replication Slot Poisoning</div>
+    <p>PostgreSQL replication slots accumulate WAL until a consumer acknowledges LSN progress. If walveil crashes or stalls without advancing the LSN, the Postgres server will grow WAL on disk indefinitely — this is a silent disk exhaustion attack vector. A malicious or misconfigured consumer can OOM the database host.</p>
+    <p>Mitigation: implement a <strong>slot warden goroutine</strong> that monitors lag (via <span class="ic">pg_replication_slots.confirmed_flush_lsn</span> vs <span class="ic">pg_current_wal_lsn()</span>). If lag exceeds a configurable threshold (default: 1GB or 5min), emit a critical alert and optionally <em>drop the slot</em> to protect the database. This is implemented in Phase 3.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-03 — Webhook SSRF (Server-Side Request Forgery)</div>
+    <p>Walveil will make outbound HTTP calls to user-configured webhook URLs. A misconfigured or malicious URL could point to internal services, cloud metadata endpoints (<span class="ic">169.254.169.254</span>), or loopback. Walveil must validate webhook targets before connecting.</p>
+    <p>Mitigation: resolve the hostname at startup, reject RFC 1918 and link-local addresses (<span class="ic">10.x</span>, <span class="ic">172.16-31.x</span>, <span class="ic">192.168.x</span>, <span class="ic">127.x</span>, <span class="ic">169.254.x</span>, <span class="ic">::1</span>). Also block <span class="ic">0.0.0.0</span> and <span class="ic">[::]</span>. Re-validate on DNS resolution changes. Implement in Phase 2.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-04 — TLS Enforcement for All Connections</div>
+    <p>PostgreSQL supports TLS. Your replication connection must verify the server certificate. Default <span class="ic">sslmode=verify-full</span>. Allow downgrade only via explicit config flag with a startup warning. All outbound webhook connections must use TLS. HTTP (non-TLS) webhook targets should require an explicit opt-in flag.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-05 — Webhook Payload Signing (HMAC)</div>
+    <p>Every outbound webhook payload must include an HMAC-SHA256 signature in the <span class="ic">X-Walveil-Signature</span> header. Key is configured per-target. Receivers can verify authenticity. This prevents spoofed replays even if the webhook endpoint is public. Implement in Phase 2.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-06 — Decoded Data Leakage via Logs</div>
+    <p>Decoded row data (INSERT/UPDATE/DELETE values) often contains PII: emails, passwords (even hashed), API keys. Walveil must never log row values at INFO or below. Debug logging of row data must be gated behind a separate <span class="ic">--log-level=trace</span> flag, and every trace log of row values must include a visible warning prefix.</p>
+    <p>Additionally: support a column-level redaction list in config so specific columns are masked with <span class="ic">[REDACTED]</span> in both logs and delivery payloads if needed.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-07 — LSN State File Integrity</div>
+    <p>The file walveil writes to persist LSN checkpoints is a critical piece of state. If it's corrupted or tampered with, walveil may re-deliver old events or skip events entirely. Protect this file: write atomically (write to <span class="ic">.tmp</span>, then <span class="ic">rename()</span>), include a checksum (CRC32 or SHA256), and on startup, verify the checksum before trusting the value. Implement in Phase 1.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-08 — Rate Limiting on Webhook Delivery</div>
+    <p>During a bulk import or schema change, walveil may decode thousands of events per second. Sending them all to a webhook target at full speed will either overwhelm the target or cause them to block walveil's delivery loop. Implement configurable per-target rate limiting using a token bucket. Also implement back-pressure: if the delivery queue fills above 80%, slow WAL consumption to avoid unbounded memory growth.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-09 — Replication User Principle of Least Privilege</div>
+    <p>The database user walveil connects as should have <em>only</em> what is required: <span class="ic">REPLICATION</span> privilege + <span class="ic">SELECT</span> on target tables (needed for initial snapshot if implemented). It must NOT be a superuser. Your documentation and startup checks must verify this and warn loudly if the connected user has superuser rights.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="card-title"><span class="dot dot-red"></span> SEC-10 — Config Validation at Startup (Fail Fast)</div>
+    <p>All configuration must be validated before any connection is opened, any slot is created, or any goroutine is spawned. Unknown keys should be rejected (prevents silent misconfiguration). Required fields missing should exit with a clear error. Invalid URLs, invalid DSNs, invalid table names — all must be caught at startup, not at runtime after state has been modified.</p>
+  </div>
+
+  <div class="warn-card">
+    <div class="card-title"><span class="dot dot-amber"></span> SEC-11 — Replication Slot Naming Collision</div>
+    <p>If two walveil instances are configured with the same slot name against the same Postgres instance, they will both try to consume from the same slot — leading to split delivery and LSN confusion. Walveil should generate a deterministic slot name from the config hash, and detect slot ownership conflicts at startup using an advisory lock.</p>
+  </div>
+
+  <div class="warn-card">
+    <div class="card-title"><span class="dot dot-amber"></span> SEC-12 — Memory Safety Under High Throughput</div>
+    <p>Decoded WAL messages are buffered in memory before delivery. A table with very wide rows or a burst of writes can cause memory spikes. Implement a max buffer size (in bytes, not events). If the buffer is full, apply back-pressure by pausing <span class="ic">XLogData</span> consumption. Expose buffer utilization as a metric.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 0 -->
+<div class="section" id="phase0">
+  <div class="section-header">
+    <span class="phase-number ph-0">PHASE 0</span>
+    <div>
+      <div class="section-title">Foundation &amp; Repository Structure</div>
+      <div class="section-desc">Before writing a single byte of replication logic, establish the project skeleton, tooling, and design contracts that will hold the entire codebase together. Getting this wrong is expensive to undo.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-gray"></span> Repository Layout</div>
+    <div class="file-tree">
+<span class="ft-dir">walveil/</span>
+├── <span class="ft-dir">cmd/walveil/</span>
+│   └── <span class="ft-file">main.go</span>              <span class="ft-comment">// entrypoint, flag parsing, signal handling</span>
+├── <span class="ft-dir">internal/</span>
+│   ├── <span class="ft-dir">config/</span>
+│   │   ├── <span class="ft-file">config.go</span>         <span class="ft-comment">// Config struct, TOML parsing, validation</span>
+│   │   └── <span class="ft-file">secrets.go</span>        <span class="ft-comment">// SecretRef resolution (env, file)</span>
+│   ├── <span class="ft-dir">replication/</span>
+│   │   ├── <span class="ft-file">conn.go</span>           <span class="ft-comment">// Postgres replication connection</span>
+│   │   ├── <span class="ft-file">slot.go</span>           <span class="ft-comment">// Slot lifecycle: create, validate, drop</span>
+│   │   ├── <span class="ft-file">stream.go</span>         <span class="ft-comment">// WAL message loop, keepalive</span>
+│   │   └── <span class="ft-file">decoder.go</span>        <span class="ft-comment">// pgoutput binary frame decoder</span>
+│   ├── <span class="ft-dir">wal/</span>
+│   │   ├── <span class="ft-file">message.go</span>        <span class="ft-comment">// WalMessage, ChangeEvent types</span>
+│   │   ├── <span class="ft-file">lsn.go</span>            <span class="ft-comment">// LSN types, formatting, comparison</span>
+│   │   └── <span class="ft-file">relation.go</span>       <span class="ft-comment">// Relation cache (OID → table schema)</span>
+│   ├── <span class="ft-dir">delivery/</span>
+│   │   ├── <span class="ft-file">dispatcher.go</span>     <span class="ft-comment">// Fan-out to configured sinks</span>
+│   │   ├── <span class="ft-dir">webhook/</span>
+│   │   │   ├── <span class="ft-file">sender.go</span>       <span class="ft-comment">// HTTP client, signing, retry</span>
+│   │   │   └── <span class="ft-file">validate.go</span>     <span class="ft-comment">// SSRF guard, URL validation</span>
+│   │   └── <span class="ft-dir">redis/</span>
+│   │       └── <span class="ft-file">stream.go</span>       <span class="ft-comment">// XADD to Redis Streams</span>
+│   ├── <span class="ft-dir">checkpoint/</span>
+│   │   └── <span class="ft-file">store.go</span>          <span class="ft-comment">// Atomic LSN persistence, CRC integrity</span>
+│   ├── <span class="ft-dir">filter/</span>
+│   │   └── <span class="ft-file">filter.go</span>         <span class="ft-comment">// Table/event-type include/exclude rules</span>
+│   ├── <span class="ft-dir">metrics/</span>
+│   │   └── <span class="ft-file">metrics.go</span>        <span class="ft-comment">// Prometheus counters, gauges, histograms</span>
+│   ├── <span class="ft-dir">health/</span>
+│   │   └── <span class="ft-file">health.go</span>         <span class="ft-comment">// /healthz, /readyz HTTP endpoints</span>
+│   └── <span class="ft-dir">warden/</span>
+│       └── <span class="ft-file">warden.go</span>         <span class="ft-comment">// Slot lag monitor (SEC-02)</span>
+├── <span class="ft-dir">config/</span>
+│   └── <span class="ft-file">walveil.example.toml</span>
+├── <span class="ft-dir">docs/</span>
+├── <span class="ft-dir">scripts/</span>
+│   ├── <span class="ft-file">test-pg.sh</span>
+│   └── <span class="ft-file">gen-certs.sh</span>
+├── <span class="ft-file">Dockerfile</span>
+├── <span class="ft-file">docker-compose.yml</span>
+├── <span class="ft-file">Makefile</span>
+├── <span class="ft-file">go.mod</span>
+└── <span class="ft-file">go.sum</span>
+    </div>
+  </div>
+
+  <!-- PATCH: Bonus — Startup Validation (lives in Phase 0 config design) -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH: Startup Validation Before Any Side Effects</div>
+    <p><strong>Non-negotiable.</strong> Validate every field in your config before you open a single connection, create a replication slot, or start a goroutine. The dangerous failure mode is partial initialization: walveil creates the replication slot successfully, then hits an invalid webhook URL and crashes — leaving an orphaned slot on Postgres that is now silently accumulating WAL with nothing consuming it.</p>
+    <p>Your validation pass must cover all of the following before touching any external state:</p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">V1</span>
+        <div class="step-content">
+          <div class="step-title">DSN format validation</div>
+          <div class="step-desc">Parse the DSN string before attempting any connection. If it fails to parse, exit immediately with a clear error message that identifies the field. Never let a malformed DSN reach <span class="ic">pgconn.Connect()</span>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">V2</span>
+        <div class="step-content">
+          <div class="step-title">URL format + SSRF pre-check</div>
+          <div class="step-desc">For every configured webhook URL: validate the URL format, then resolve the hostname and run the full SSRF blocklist check (RFC 1918, loopback, link-local, <span class="ic">0.0.0.0</span>, <span class="ic">::1</span>, <span class="ic">fc00::/7</span>, <span class="ic">fe80::/10</span>). Fail loudly on any violation — before the slot is created.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">V3</span>
+        <div class="step-content">
+          <div class="step-title">Required fields</div>
+          <div class="step-desc">Every required field must be present and non-empty. Emit a specific error per missing field — not a generic "config invalid". Include the field path (e.g. <span class="ic">source.slot_name</span>) in the error message.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">V4</span>
+        <div class="step-content">
+          <div class="step-title">Unknown keys rejected</div>
+          <div class="step-desc">TOML strict-decode with a struct tag that rejects unknown keys. A typo like <span class="ic">ssl_mmode</span> instead of <span class="ic">ssl_mode</span> should be a fatal error, not a silently ignored key that leaves TLS disabled.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">V5</span>
+        <div class="step-content">
+          <div class="step-title">File paths</div>
+          <div class="step-desc">For every configured file path (cert files, checkpoint path, secret files): verify the path is syntactically valid and that the parent directory exists and is writable. A checkpoint path pointing at a read-only directory is a startup error, not a runtime surprise.</div>
+        </div>
+      </div>
+    </div>
+    <div class="code-block"><code><span class="cm">// internal/config/config.go</span>
+<span class="ck">func</span> (c *<span class="cc">Config</span>) <span class="cf">Validate</span>() <span class="cc">error</span> {
+    <span class="cm">// Called ONCE before any external state is touched.</span>
+    <span class="cm">// Returns an error listing ALL violations at once (not just the first).</span>
+    <span class="ck">var</span> errs []<span class="cc">string</span>
+
+    <span class="ck">if</span> _, err := pgconn.<span class="cf">ParseConfig</span>(c.Source.<span class="cf">DSNValue</span>()); err != <span class="ck">nil</span> {
+        errs = <span class="cf">append</span>(errs, <span class="cf">fmt.Sprintf</span>(<span class="cs">"source.dsn: %v"</span>, err))
+    }
+    <span class="ck">for</span> i, sink := <span class="ck">range</span> c.Sinks {
+        <span class="ck">if</span> sink.Type == <span class="cs">"webhook"</span> {
+            <span class="ck">if</span> err := <span class="cf">validateWebhookURL</span>(sink.URL); err != <span class="ck">nil</span> {
+                errs = <span class="cf">append</span>(errs, <span class="cf">fmt.Sprintf</span>(<span class="cs">"sinks[%d].url: %v"</span>, i, err))
+            }
+        }
+    }
+    <span class="cm">// ... all other checks ...</span>
+    <span class="ck">if</span> <span class="cf">len</span>(errs) > 0 {
+        <span class="ck">return</span> <span class="cf">fmt.Errorf</span>(<span class="cs">"config validation failed:\n  - %s"</span>, strings.<span class="cf">Join</span>(errs, <span class="cs">"\n  - "</span>))
+    }
+    <span class="ck">return</span> <span class="ck">nil</span>
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-gray"></span> Config Schema</div>
+    <div class="code-block"><code><span class="cm"># walveil.toml</span>
+
+[<span class="cc">source</span>]
+<span class="cf">dsn</span> = <span class="cs">"$WALVEIL_PG_DSN"</span>
+<span class="cf">slot_name</span> = <span class="cs">"walveil_main"</span>
+<span class="cf">publication_name</span> = <span class="cs">"walveil_pub"</span>
+<span class="cf">ssl_mode</span> = <span class="cs">"verify-full"</span>
+<span class="cf">ssl_root_cert</span> = <span class="cs">"/certs/pg-ca.crt"</span>
+
+[<span class="cc">source.slot</span>]
+<span class="cf">create_if_missing</span> = <span class="ck">true</span>
+<span class="cf">max_lag_bytes</span> = <span class="cn">1073741824</span>
+<span class="cf">max_lag_seconds</span> = <span class="cn">300</span>
+
+[<span class="cc">filter</span>]
+<span class="cf">tables</span> = [<span class="cs">"public.orders"</span>, <span class="cs">"public.users"</span>]
+<span class="cf">events</span> = [<span class="cs">"insert"</span>, <span class="cs">"update"</span>, <span class="cs">"delete"</span>]
+<span class="cf">redact_columns</span> = [<span class="cs">"users.password_hash"</span>, <span class="cs">"users.email"</span>]
+
+[[<span class="cc">sinks</span>]]
+<span class="cf">type</span> = <span class="cs">"webhook"</span>
+<span class="cf">url</span> = <span class="cs">"https://myapp.com/events"</span>
+<span class="cf">secret</span> = <span class="cs">"$WEBHOOK_SECRET"</span>
+<span class="cf">timeout_ms</span> = <span class="cn">5000</span>
+<span class="cf">max_retries</span> = <span class="cn">5</span>
+<span class="cf">rate_limit_rps</span> = <span class="cn">100</span>
+
+[[<span class="cc">sinks</span>]]
+<span class="cf">type</span> = <span class="cs">"redis"</span>
+<span class="cf">addr</span> = <span class="cs">"$REDIS_ADDR"</span>
+<span class="cf">stream_name</span> = <span class="cs">"walveil:changes"</span>
+<span class="cf">max_len</span> = <span class="cn">100000</span>
+
+[<span class="cc">checkpoint</span>]
+<span class="cf">path</span> = <span class="cs">"/data/walveil.lsn"</span>
+<span class="cf">flush_interval_ms</span> = <span class="cn">1000</span>
+
+[<span class="cc">server</span>]
+<span class="cf">addr</span> = <span class="cs">":9090"</span>
+
+[<span class="cc">log</span>]
+<span class="cf">level</span> = <span class="cs">"info"</span>
+<span class="cf">format</span> = <span class="cs">"json"</span></code></div>
+  </div>
+
+  <!-- PATCH: Secrets Handling -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 7: Secrets Handling — No Accidental Leaks</div>
+    <p>Your DSN contains the database password. Your webhook config contains HMAC signing keys. These values flow through your application at startup and live in your config struct for the lifetime of the process. The leak paths are numerous: a logger that serializes the config struct, an error message that includes the raw DSN on parse failure, a debug endpoint that dumps internal state, a panic stack trace.</p>
+    <p>The mitigation has two parts. First, load secrets only from environment variables or files — never hardcoded in config. Second, implement a <span class="ic">SecretRef</span> type that wraps secret values and whose <span class="ic">String()</span> and <span class="ic">MarshalJSON()</span> methods return <span class="ic">[REDACTED]</span>, so the value cannot accidentally serialize into any output regardless of how it gets there. Sanitize at the point you construct values, not at the point you log them.</p>
+    <div class="code-block"><code><span class="cm">// internal/config/secrets.go</span>
+<span class="ck">type</span> <span class="cc">SecretRef</span> <span class="ck">struct</span> {
+    value <span class="cc">string</span>
+}
+
+<span class="ck">func</span> (s <span class="cc">SecretRef</span>) <span class="cf">String</span>() <span class="cc">string</span>       { <span class="ck">return</span> <span class="cs">"[REDACTED]"</span> }
+<span class="ck">func</span> (s <span class="cc">SecretRef</span>) <span class="cf">MarshalJSON</span>() ([]<span class="cc">byte</span>, <span class="cc">error</span>) {
+    <span class="ck">return</span> []<span class="cc">byte</span>(<span class="cs">`"[REDACTED]"`</span>), <span class="ck">nil</span>
+}
+<span class="ck">func</span> (s <span class="cc">SecretRef</span>) <span class="cf">Value</span>() <span class="cc">string</span>        { <span class="ck">return</span> s.value }
+<span class="ck">func</span> <span class="cf">NewSecretRef</span>(raw <span class="cc">string</span>) <span class="cc">SecretRef</span>  { <span class="ck">return</span> <span class="cc">SecretRef</span>{value: raw} }
+
+<span class="cm">// Resolver: env var interpolation ($VAR) and file:// paths</span>
+<span class="ck">func</span> <span class="cf">ResolveSecret</span>(ref <span class="cc">string</span>) (<span class="cc">SecretRef</span>, <span class="cc">error</span>) {
+    <span class="ck">if</span> strings.<span class="cf">HasPrefix</span>(ref, <span class="cs">"$"</span>) {
+        val := os.<span class="cf">Getenv</span>(ref[1:])
+        <span class="ck">if</span> val == <span class="cs">""</span> { <span class="ck">return</span> <span class="cc">SecretRef</span>{}, <span class="cf">fmt.Errorf</span>(<span class="cs">"env var %s not set"</span>, ref[1:]) }
+        <span class="ck">return</span> <span class="cf">NewSecretRef</span>(val), <span class="ck">nil</span>
+    }
+    <span class="ck">if</span> strings.<span class="cf">HasPrefix</span>(ref, <span class="cs">"file://"</span>) {
+        b, err := os.<span class="cf">ReadFile</span>(ref[7:])
+        <span class="ck">if</span> err != <span class="ck">nil</span> { <span class="ck">return</span> <span class="cc">SecretRef</span>{}, err }
+        <span class="ck">return</span> <span class="cf">NewSecretRef</span>(strings.<span class="cf">TrimSpace</span>(<span class="cc">string</span>(b))), <span class="ck">nil</span>
+    }
+    <span class="ck">return</span> <span class="cf">NewSecretRef</span>(ref), <span class="ck">nil</span>  <span class="cm">// literal fallback (dev only)</span>
+}</code></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gray"></span> Makefile Targets</div>
+      <div class="code-block"><code><span class="cf">make</span> build
+<span class="cf">make</span> test
+<span class="cf">make</span> test-pg
+<span class="cf">make</span> lint
+<span class="cf">make</span> vet
+<span class="cf">make</span> docker
+<span class="cf">make</span> release
+<span class="cf">make</span> gen-certs</code></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-gray"></span> Go Module Setup</div>
+      <div class="code-block"><code><span class="ck">module</span> <span class="cs">github.com/you/walveil</span>
+<span class="ck">go</span> <span class="cn">1.22</span>
+<span class="ck">require</span> (
+  github.com/BurntSushi/toml
+  github.com/jackc/pgconn
+  github.com/jackc/pglogrepl
+  github.com/redis/go-redis/v9
+  github.com/prometheus/client_golang
+  go.uber.org/zap
+)</code></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 1 -->
+<div class="section" id="phase1">
+  <div class="section-header">
+    <span class="phase-number ph-1">PHASE 1</span>
+    <div>
+      <div class="section-title">WAL Core Engine</div>
+      <div class="section-desc">The heart of walveil. Implement the PostgreSQL logical replication protocol from scratch. This is the hardest phase technically — get it right before building anything on top of it.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-blue"></span> How PostgreSQL Logical Replication Actually Works</div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Replication Connection</div>
+          <div class="step-desc">Connect with <span class="ic">replication=database</span> parameter. Use <span class="ic">pgconn.Connect(ctx, dsn)</span> directly — not a pool.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">Identify System</div>
+          <div class="step-desc">Send <span class="ic">IDENTIFY_SYSTEM</span>. Store the system identifier for cross-cluster detection on every reconnect.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Create / Validate Replication Slot</div>
+          <div class="step-desc">Send <span class="ic">CREATE_REPLICATION_SLOT walveil_main LOGICAL pgoutput NOEXPORT_SNAPSHOT</span>. If slot exists, query <span class="ic">pg_replication_slots</span> for confirmed flush LSN.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <div class="step-title">Start Replication Stream</div>
+          <div class="step-desc">Send <span class="ic">START_REPLICATION SLOT walveil_main LOGICAL lsn (proto_version '2', publication_names 'walveil_pub')</span>. Connection becomes server-push only except for keepalive responses.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <div class="step-content">
+          <div class="step-title">Message Loop</div>
+          <div class="step-desc">Read <span class="ic">XLogData</span> and <span class="ic">PrimaryKeepalive</span> messages. Decode pgoutput binary payload on each <span class="ic">XLogData</span>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">06</span>
+        <div class="step-content">
+          <div class="step-title">Standby Status Update</div>
+          <div class="step-desc">Periodically send <span class="ic">StandbyStatusUpdate</span> to acknowledge LSN progress. Only acknowledge LSNs for events you have confirmed delivered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATCH 1: LSN Ack Correctness -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 1: LSN Ack Correctness — No Data Loss</div>
+    <p>Postgres tracks how far you've consumed WAL via the LSN you acknowledge back. The rule is simple: <strong>only acknowledge an LSN after every configured sink has confirmed it received and accepted that event.</strong> If you ack early and crash before the webhook fires, Postgres has already cleaned up that WAL segment — those events are gone with no way to recover them.</p>
+    <p>Acknowledging late just means you re-deliver on restart, which is acceptable. Your checkpoint file and your standby status update to Postgres must be gated on the same moment: <em>"all sinks said yes."</em></p>
+    <div class="code-block"><code><span class="cm">// stream.go — the ack must flow AFTER dispatcher confirms delivery</span>
+<span class="ck">func</span> (s *<span class="cc">Stream</span>) <span class="cf">processXLogData</span>(msg pglogrepl.<span class="cc">XLogData</span>) <span class="cc">error</span> {
+    event, err := s.decoder.<span class="cf">Decode</span>(msg.WALData)
+    <span class="ck">if</span> err != <span class="ck">nil</span> { <span class="ck">return</span> err }
+
+    <span class="cm">// Block until ALL sinks confirm. Only then advance the confirmed LSN.</span>
+    <span class="ck">if</span> err := s.dispatcher.<span class="cf">DispatchAndWait</span>(event); err != <span class="ck">nil</span> {
+        <span class="ck">return</span> err  <span class="cm">// do NOT advance LSN on delivery failure</span>
+    }
+
+    s.confirmedLSN = msg.WALStart  <span class="cm">// advance only after confirmed delivery</span>
+    <span class="ck">return</span> <span class="ck">nil</span>
+}
+
+<span class="cm">// Keepalive flush: send StandbyStatusUpdate with confirmed LSN, not current WAL position</span>
+<span class="ck">func</span> (s *<span class="cc">Stream</span>) <span class="cf">sendStandbyStatus</span>() <span class="cc">error</span> {
+    <span class="ck">return</span> pglogrepl.<span class="cf">SendStandbyStatusUpdate</span>(s.ctx, s.conn, pglogrepl.<span class="cc">StandbyStatusUpdate</span>{
+        WALWritePosition: s.confirmedLSN,
+        WALFlushPosition: s.confirmedLSN,
+        WALApplyPosition: s.confirmedLSN,
+        ClientTime:       time.<span class="cf">Now</span>(),
+        ReplyRequested:   <span class="ck">false</span>,
+    })
+}</code></div>
+  </div>
+
+  <!-- PATCH 4: Transaction Boundaries -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 4: Transaction Boundaries — No Logical Corruption</div>
+    <p>WAL arrives as a stream of individual row changes, but those changes belong to transactions. A transaction might insert into <span class="ic">orders</span>, then <span class="ic">order_items</span>, then update <span class="ic">inventory</span> — and all three only matter together. If you emit events as you decode them, you'll fire the orders insert before the transaction commits, meaning downstream systems may act on data that gets rolled back.</p>
+    <p>You must buffer all changes belonging to a transaction in memory, keyed by XID, and only emit them as a batch when you see the <span class="ic">COMMIT</span> message. The <span class="ic">Begin</span> message opens the buffer, every DML message appends to it, and <span class="ic">Commit</span> flushes it downstream as an atomic unit.</p>
+    <div class="code-block"><code><span class="cm">// internal/replication/decoder.go</span>
+<span class="ck">type</span> <span class="cc">txnBuffer</span> <span class="ck">struct</span> {
+    xid       <span class="cc">uint32</span>
+    commitLSN pglogrepl.<span class="cc">LSN</span>
+    events    []*<span class="cc">wal.ChangeEvent</span>
+}
+
+<span class="ck">type</span> <span class="cc">Decoder</span> <span class="ck">struct</span> {
+    relations *<span class="cc">wal.RelationCache</span>
+    txns      <span class="ck">map</span>[<span class="cc">uint32</span>]*<span class="cc">txnBuffer</span>  <span class="cm">// keyed by XID</span>
+}
+
+<span class="ck">func</span> (d *<span class="cc">Decoder</span>) <span class="cf">Decode</span>(data []<span class="cc">byte</span>) ([]*<span class="cc">wal.ChangeEvent</span>, <span class="cc">error</span>) {
+    msgType := data[0]
+    <span class="ck">switch</span> msgType {
+    <span class="ck">case</span> <span class="cs">'B'</span>: <span class="cm">// Begin — open buffer for this XID</span>
+        msg, _ := pglogrepl.<span class="cf">ParseBeginMessage</span>(data[1:])
+        d.txns[msg.Xid] = &<span class="cc">txnBuffer</span>{xid: msg.Xid}
+
+    <span class="ck">case</span> <span class="cs">'I'</span>, <span class="cs">'U'</span>, <span class="cs">'D'</span>: <span class="cm">// DML — append to buffer, do NOT emit yet</span>
+        event, xid, _ := d.<span class="cf">decodeDML</span>(msgType, data[1:])
+        <span class="ck">if</span> buf, ok := d.txns[xid]; ok {
+            buf.events = <span class="cf">append</span>(buf.events, event)
+        }
+        <span class="ck">return</span> <span class="ck">nil</span>, <span class="ck">nil</span>  <span class="cm">// nothing emitted until commit</span>
+
+    <span class="ck">case</span> <span class="cs">'C'</span>: <span class="cm">// Commit — flush the batch atomically</span>
+        msg, _ := pglogrepl.<span class="cf">ParseCommitMessage</span>(data[1:])
+        buf := d.txns[msg.TransactionID]
+        events := buf.events
+        <span class="ck">delete</span>(d.txns, msg.TransactionID)
+        <span class="ck">return</span> events, <span class="ck">nil</span>  <span class="cm">// downstream sees the full committed txn at once</span>
+    }
+    <span class="ck">return</span> <span class="ck">nil</span>, <span class="ck">nil</span>
+}</code></div>
+  </div>
+
+  <!-- PATCH 5: Reconnect + System ID Verification -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 5: Reconnect &amp; System ID Verification — No Cross-Cluster Corruption</div>
+    <p>When walveil loses its replication connection and reconnects, the naive implementation just reconnects and resumes from the last checkpointed LSN. The problem: in a failover scenario, you may reconnect to a different Postgres instance — a promoted replica, or a different host entirely — whose WAL history diverges from where you left off. LSNs are not globally unique across clusters; the same LSN value means different things on different instances.</p>
+    <p>On every reconnect, send <span class="ic">IDENTIFY_SYSTEM</span> and compare the returned system identifier against what you stored on first connect. A mismatch means you are talking to a different cluster. <strong>Hard fail immediately. Log clearly. Require human intervention. Do not attempt to continue.</strong></p>
+    <div class="code-block"><code><span class="cm">// internal/replication/conn.go</span>
+<span class="ck">func</span> (c *<span class="cc">Conn</span>) <span class="cf">reconnect</span>(ctx <span class="cc">context.Context</span>) <span class="cc">error</span> {
+    backoff := <span class="cf">newExponentialBackoff</span>(1*time.<span class="cc">Second</span>, 60*time.<span class="cc">Second</span>)
+    <span class="ck">for</span> {
+        conn, err := pgconn.<span class="cf">Connect</span>(ctx, c.dsn.<span class="cf">Value</span>())
+        <span class="ck">if</span> err != <span class="ck">nil</span> {
+            c.log.<span class="cf">Warn</span>(<span class="cs">"reconnect failed, backing off"</span>, zap.<span class="cf">Error</span>(err))
+            <span class="cf">select</span> {
+            <span class="ck">case</span> <-time.<span class="cf">After</span>(backoff.<span class="cf">Next</span>()):
+            <span class="ck">case</span> <-ctx.<span class="cf">Done</span>(): <span class="ck">return</span> ctx.<span class="cf">Err</span>()
+            }
+            <span class="ck">continue</span>
+        }
+
+        <span class="cm">// CRITICAL: verify system ID on every reconnect</span>
+        sysID, err := pglogrepl.<span class="cf">IdentifySystem</span>(ctx, conn)
+        <span class="ck">if</span> err != <span class="ck">nil</span> { conn.<span class="cf">Close</span>(ctx); <span class="ck">continue</span> }
+
+        <span class="ck">if</span> c.storedSystemID != <span class="cs">""</span> && sysID.SystemID != c.storedSystemID {
+            <span class="cm">// HARD FAIL — different cluster. Do not resume.</span>
+            <span class="ck">return</span> <span class="cf">fmt.Errorf</span>(
+                <span class="cs">"FATAL: system ID mismatch: expected %s, got %s — possible failover to different cluster, manual intervention required"</span>,
+                c.storedSystemID, sysID.SystemID,
+            )
+        }
+
+        c.storedSystemID = sysID.SystemID
+        c.conn = conn
+        backoff.<span class="cf">Reset</span>()
+        <span class="ck">return</span> <span class="ck">nil</span>
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-blue"></span> pgoutput Binary Format</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Byte</th><th>Type</th><th>What It Contains</th><th>Your Action</th></tr>
+        <tr><td>'B'</td><td>Begin</td><td>XID, commit LSN, commit timestamp</td><td>Start transaction accumulator</td></tr>
+        <tr><td>'C'</td><td>Commit</td><td>Commit LSN, end LSN</td><td>Flush transaction, advance LSN</td></tr>
+        <tr><td>'R'</td><td>Relation</td><td>OID, schema, table, columns+types</td><td>Update relation cache</td></tr>
+        <tr><td>'I'</td><td>Insert</td><td>Relation OID, new tuple</td><td>Emit INSERT event</td></tr>
+        <tr><td>'U'</td><td>Update</td><td>Relation OID, old tuple?, new tuple</td><td>Emit UPDATE event</td></tr>
+        <tr><td>'D'</td><td>Delete</td><td>Relation OID, old tuple</td><td>Emit DELETE event</td></tr>
+        <tr><td>'T'</td><td>Truncate</td><td>Relation OIDs</td><td>Emit TRUNCATE or skip</td></tr>
+        <tr><td>'O'</td><td>Origin</td><td>Origin LSN, name</td><td>Store for provenance</td></tr>
+        <tr><td>'M'</td><td>Message</td><td>Prefix, content</td><td>Forward or ignore</td></tr>
+        <tr><td>'Y'</td><td>Type</td><td>OID, namespace, type name</td><td>Update type cache</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-blue"></span> LSN Checkpoint — Atomic, Checksummed (SEC-07)</div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Write Protocol</div>
+          <div class="step-desc">Write to <span class="ic">path.tmp</span>, then <span class="ic">os.Rename()</span>. Atomic on POSIX — cannot be half-done.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">File Format</div>
+          <div class="step-desc">JSON: <span class="ic">{"lsn":"0/15D3AC8","crc":"a1b2c3d4","ts":"..."}</span>. CRC32 of LSN string. On read, verify CRC — mismatch is a fatal startup error.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Flush Timing</div>
+          <div class="step-desc">Flush on configurable interval (default 1s) AND immediately before shutdown. Gap between events and flush is your at-least-once delivery window.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 2 -->
+<div class="section" id="phase2">
+  <div class="section-header">
+    <span class="phase-number ph-2">PHASE 2</span>
+    <div>
+      <div class="section-title">Delivery Layer — Webhooks &amp; Redis</div>
+      <div class="section-desc">Events decoded from the WAL must reach external systems reliably, with retry semantics, signing, and SSRF protection.</div>
+    </div>
+  </div>
+
+  <!-- PATCH 2: Backpressure -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 2: Backpressure — No Memory Death</div>
+    <p>Your WAL decoder can read faster than your sinks can deliver. Without backpressure, decoded events pile up in memory until the process gets OOM-killed. The fix is a bounded queue between the decoder and the dispatcher. When that queue is full, you stop reading from the Postgres replication stream entirely — you don't buffer more, you don't drop events, you just pause.</p>
+    <p>Postgres is fine with this; it holds the WAL and waits. The pressure travels back to the database instead of exploding your heap.</p>
+    <div class="code-block"><code><span class="cm">// internal/delivery/dispatcher.go</span>
+<span class="ck">type</span> <span class="cc">Dispatcher</span> <span class="ck">struct</span> {
+    sinks   []<span class="cc">Sink</span>
+    filter  *<span class="cc">filter.Filter</span>
+    <span class="cm">// Bounded queue — this IS the backpressure mechanism.</span>
+    <span class="cm">// Size in BYTES not event count (SEC-12: wide rows must not bypass the limit).</span>
+    queue   <span class="ck">chan</span> *<span class="cc">wal.ChangeEvent</span>   <span class="cm">// buffered, capacity = config.QueueSize</span>
+    metrics *<span class="cc">metrics.Registry</span>
+}
+
+<span class="cm">// Called by the WAL stream loop. BLOCKS when queue is full — that's the point.</span>
+<span class="ck">func</span> (d *<span class="cc">Dispatcher</span>) <span class="cf">Enqueue</span>(ctx <span class="cc">context.Context</span>, event *<span class="cc">wal.ChangeEvent</span>) <span class="cc">error</span> {
+    <span class="ck">if</span> !d.filter.<span class="cf">Match</span>(event) { <span class="ck">return</span> <span class="ck">nil</span> }
+
+    <span class="ck">select</span> {
+    <span class="ck">case</span> d.queue <- event:
+        d.metrics.QueueDepth.<span class="cf">Set</span>(<span class="cc">float64</span>(<span class="cf">len</span>(d.queue)))
+        <span class="ck">return</span> <span class="ck">nil</span>
+    <span class="ck">case</span> <-ctx.<span class="cf">Done</span>():
+        <span class="ck">return</span> ctx.<span class="cf">Err</span>()
+    <span class="cm">// NO default: case — intentional. Blocking here pauses WAL consumption.</span>
+    <span class="cm">// Postgres waits. Memory stays flat. No OOM.</span>
+    }
+}
+
+<span class="cm">// Stream loop — note: if Enqueue blocks, ReceiveMessage is not called again.</span>
+<span class="ck">func</span> (s *<span class="cc">Stream</span>) <span class="cf">run</span>(ctx <span class="cc">context.Context</span>) <span class="cc">error</span> {
+    <span class="ck">for</span> {
+        msg, err := pglogrepl.<span class="cf">ReceiveMessage</span>(ctx, s.conn)
+        <span class="cm">// ... decode ...</span>
+        <span class="ck">if</span> err := s.dispatcher.<span class="cf">Enqueue</span>(ctx, event); err != <span class="ck">nil</span> {
+            <span class="ck">return</span> err  <span class="cm">// context cancelled = clean shutdown</span>
+        }
+        <span class="cm">// Next ReceiveMessage only called after Enqueue returns.</span>
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-green"></span> Dispatcher Architecture</div>
+    <div class="code-block"><code><span class="ck">type</span> <span class="cc">Sink</span> <span class="ck">interface</span> {
+    <span class="cf">Name</span>() <span class="cc">string</span>
+    <span class="cf">Send</span>(ctx <span class="cc">context.Context</span>, batch []*<span class="cc">wal.ChangeEvent</span>) <span class="cc">error</span>
+    <span class="cf">Close</span>() <span class="cc">error</span>
+}
+
+<span class="cm">// DispatchAndWait fans out to all sinks concurrently, blocks until all confirm.</span>
+<span class="cm">// LSN is only advanced after this returns nil.</span>
+<span class="ck">func</span> (d *<span class="cc">Dispatcher</span>) <span class="cf">DispatchAndWait</span>(batch []*<span class="cc">wal.ChangeEvent</span>) <span class="cc">error</span> {
+    <span class="ck">var</span> wg sync.<span class="cc">WaitGroup</span>
+    errs := <span class="cf">make</span>([]<span class="cc">error</span>, <span class="cf">len</span>(d.sinks))
+    <span class="ck">for</span> i, sink := <span class="ck">range</span> d.sinks {
+        wg.<span class="cf">Add</span>(1)
+        <span class="ck">go</span> <span class="ck">func</span>(i <span class="cc">int</span>, s <span class="cc">Sink</span>) {
+            <span class="ck">defer</span> wg.<span class="cf">Done</span>()
+            errs[i] = s.<span class="cf">Send</span>(context.<span class="cf">Background</span>(), batch)
+        }(i, sink)
+    }
+    wg.<span class="cf">Wait</span>()
+    <span class="ck">return</span> <span class="cf">errors.Join</span>(errs...)
+}</code></div>
+  </div>
+
+  <!-- PATCH 6: SSRF and DNS Protection -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 6: SSRF &amp; DNS Protection — No External Exploitation</div>
+    <p>Walveil makes outbound HTTP calls to URLs that users configure. A misconfigured or malicious URL can point to internal services, other containers in your network, or cloud metadata endpoints like <span class="ic">169.254.169.254</span> which on AWS and GCP serve IAM credentials.</p>
+    <p>The defense is to resolve the hostname yourself before opening the connection, then inspect every resolved IP address against a blocklist. <strong>Do this check on every request attempt, not just at startup</strong> — DNS records can change between retries and an attacker can exploit that window.</p>
+    <div class="code-block"><code><span class="cm">// internal/delivery/webhook/validate.go</span>
+<span class="ck">var</span> blockedCIDRs = []<span class="cc">*net.IPNet</span>{
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"10.0.0.0/8"</span>),       <span class="cm">// RFC 1918</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"172.16.0.0/12"</span>),     <span class="cm">// RFC 1918</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"192.168.0.0/16"</span>),    <span class="cm">// RFC 1918</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"127.0.0.0/8"</span>),       <span class="cm">// loopback</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"169.254.0.0/16"</span>),    <span class="cm">// link-local / metadata endpoints</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"::1/128"</span>),           <span class="cm">// IPv6 loopback</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"fc00::/7"</span>),          <span class="cm">// IPv6 private</span>
+    <span class="cf">mustParseCIDR</span>(<span class="cs">"fe80::/10"</span>),         <span class="cm">// IPv6 link-local</span>
+}
+
+<span class="ck">func</span> <span class="cf">ValidateAndResolve</span>(rawURL <span class="cc">string</span>) (<span class="cc">string</span>, <span class="cc">error</span>) {
+    u, err := url.<span class="cf">Parse</span>(rawURL)
+    <span class="ck">if</span> err != <span class="ck">nil</span> { <span class="ck">return</span> <span class="cs">""</span>, err }
+    <span class="ck">if</span> u.Scheme != <span class="cs">"https"</span> { <span class="ck">return</span> <span class="cs">""</span>, <span class="cf">fmt.Errorf</span>(<span class="cs">"only https allowed"</span>) }
+
+    addrs, err := net.<span class="cf">LookupHost</span>(u.Hostname())
+    <span class="ck">if</span> err != <span class="ck">nil</span> { <span class="ck">return</span> <span class="cs">""</span>, err }
+
+    <span class="ck">for</span> _, addr := <span class="ck">range</span> addrs {
+        ip := net.<span class="cf">ParseIP</span>(addr)
+        <span class="ck">if</span> ip == <span class="ck">nil</span> || ip.<span class="cf">IsUnspecified</span>() {
+            <span class="ck">return</span> <span class="cs">""</span>, <span class="cf">fmt.Errorf</span>(<span class="cs">"blocked: unspecified address"</span>)
+        }
+        <span class="ck">for</span> _, cidr := <span class="ck">range</span> blockedCIDRs {
+            <span class="ck">if</span> cidr.<span class="cf">Contains</span>(ip) {
+                <span class="ck">return</span> <span class="cs">""</span>, <span class="cf">fmt.Errorf</span>(<span class="cs">"blocked: %s resolves to private/reserved address %s"</span>, u.Hostname(), ip)
+            }
+        }
+    }
+    <span class="ck">return</span> rawURL, <span class="ck">nil</span>
+}
+
+<span class="cm">// Custom dialer that re-validates on EVERY connection attempt (DNS rebinding defense)</span>
+<span class="ck">func</span> <span class="cf">SafeDialer</span>() *net.<span class="cc">Dialer</span> {
+    <span class="ck">return</span> &net.<span class="cc">Dialer</span>{
+        <span class="cf">Control</span>: <span class="ck">func</span>(network, address <span class="cc">string</span>, c syscall.<span class="cc">RawConn</span>) <span class="cc">error</span> {
+            host, _, _ := net.<span class="cf">SplitHostPort</span>(address)
+            _, err := <span class="cf">ValidateAndResolve</span>(<span class="cs">"https://"</span> + host)
+            <span class="ck">return</span> err
+        },
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-green"></span> Webhook Sender — Retry, HMAC Signing, Rate Limiting</div>
+    <div class="code-block"><code><span class="ck">type</span> <span class="cc">WebhookSender</span> <span class="ck">struct</span> {
+    target     <span class="cc">WebhookTarget</span>
+    client     *http.<span class="cc">Client</span>
+    limiter    *rate.<span class="cc">Limiter</span>    <span class="cm">// token bucket per target (SEC-08)</span>
+    metrics    *<span class="cc">metrics.Registry</span>
+}
+
+<span class="ck">func</span> (w *<span class="cc">WebhookSender</span>) <span class="cf">Send</span>(ctx <span class="cc">context.Context</span>, batch []*<span class="cc">wal.ChangeEvent</span>) <span class="cc">error</span> {
+    body, _ := json.<span class="cf">Marshal</span>(batch)
+
+    <span class="cm">// Rate limit: wait for token before each attempt (SEC-08)</span>
+    w.limiter.<span class="cf">Wait</span>(ctx)
+
+    <span class="cm">// HMAC-SHA256 signature (SEC-05)</span>
+    mac := hmac.<span class="cf">New</span>(sha256.<span class="cf">New</span>, []<span class="cc">byte</span>(w.target.Secret.<span class="cf">Value</span>()))
+    mac.<span class="cf">Write</span>(body)
+    sig := hex.<span class="cf">EncodeToString</span>(mac.<span class="cf">Sum</span>(<span class="ck">nil</span>))
+
+    req, _ := http.<span class="cf">NewRequestWithContext</span>(ctx, http.<span class="cc">MethodPost</span>, w.target.URL, bytes.<span class="cf">NewReader</span>(body))
+    req.Header.<span class="cf">Set</span>(<span class="cs">"Content-Type"</span>, <span class="cs">"application/json"</span>)
+    req.Header.<span class="cf">Set</span>(<span class="cs">"X-Walveil-Signature"</span>, <span class="cs">"sha256="</span>+sig)
+
+    <span class="cm">// Retry with exponential backoff</span>
+    <span class="ck">return</span> <span class="cf">withRetry</span>(ctx, w.target.MaxRetries, <span class="ck">func</span>() <span class="cc">error</span> {
+        resp, err := w.client.<span class="cf">Do</span>(req)
+        <span class="ck">if</span> err != <span class="ck">nil</span> { <span class="ck">return</span> err }
+        <span class="ck">defer</span> resp.Body.<span class="cf">Close</span>()
+        <span class="ck">if</span> resp.StatusCode >= 500 { <span class="ck">return</span> <span class="cc">ErrRetryable</span> }
+        <span class="ck">if</span> resp.StatusCode >= 400 { <span class="ck">return</span> <span class="cc">ErrPermanent</span> }
+        <span class="ck">return</span> <span class="ck">nil</span>
+    })
+}</code></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 3 -->
+<div class="section" id="phase3">
+  <div class="section-header">
+    <span class="phase-number ph-3">PHASE 3</span>
+    <div>
+      <div class="section-title">Observability &amp; Slot Warden</div>
+      <div class="section-desc">You cannot operate what you cannot see. Metrics, structured logging, health endpoints, and the slot warden goroutine that protects your Postgres instance.</div>
+    </div>
+  </div>
+
+  <!-- PATCH 3: Slot Control -->
+  <div class="patch-card">
+    <div class="card-title"><span class="dot dot-patch"></span> PATCH 3: Slot Control — No Database Death</div>
+    <p>A replication slot forces Postgres to retain all WAL from your last acknowledged LSN forward, indefinitely. If walveil stalls for any reason — a slow sink, a network partition, a bad deploy — that WAL accumulates on disk with nothing stopping it. On a busy database this can fill the disk in hours and crash the entire Postgres instance, affecting every application using that database, not just walveil.</p>
+    <p>You need a warden goroutine that continuously monitors the gap between your confirmed LSN and the current WAL position. It should <strong>always alert</strong> when lag crosses your threshold. It should <strong>only drop the slot</strong> if you've explicitly configured it to, because dropping the slot is a destructive act that requires a recovery plan.</p>
+    <div class="code-block"><code><span class="cm">// internal/warden/warden.go</span>
+<span class="ck">type</span> <span class="cc">Warden</span> <span class="ck">struct</span> {
+    db          *pgconn.<span class="cc">PgConn</span>
+    slotName    <span class="cc">string</span>
+    maxLagBytes <span class="cc">int64</span>
+    maxLagSecs  <span class="cc">int64</span>
+    dropOnLimit <span class="cc">bool</span>   <span class="cm">// explicit opt-in only — defaults to false</span>
+    metrics     *<span class="cc">metrics.Registry</span>
+    log         *zap.<span class="cc">Logger</span>
+}
+
+<span class="ck">func</span> (w *<span class="cc">Warden</span>) <span class="cf">Run</span>(ctx <span class="cc">context.Context</span>) {
+    ticker := time.<span class="cf">NewTicker</span>(30 * time.<span class="cc">Second</span>)
+    <span class="ck">defer</span> ticker.<span class="cf">Stop</span>()
+    <span class="ck">for</span> {
+        <span class="ck">select</span> {
+        <span class="ck">case</span> <-ticker.C:
+            w.<span class="cf">check</span>(ctx)
+        <span class="ck">case</span> <-ctx.<span class="cf">Done</span>():
+            <span class="ck">return</span>
+        }
+    }
+}
+
+<span class="ck">func</span> (w *<span class="cc">Warden</span>) <span class="cf">check</span>(ctx <span class="cc">context.Context</span>) {
+    <span class="ck">const</span> q = <span class="cs">`
+        SELECT
+          pg_wal_lsn_diff(pg_current_wal_lsn(), confirmed_flush_lsn) AS lag_bytes,
+          EXTRACT(EPOCH FROM (now() - restart_lsn_time))              AS lag_secs
+        FROM pg_replication_slots
+        WHERE slot_name = $1`</span>
+    <span class="ck">var</span> lagBytes, lagSecs <span class="cc">int64</span>
+    <span class="cm">// ... query execution ...</span>
+
+    w.metrics.SlotLagBytes.<span class="cf">Set</span>(<span class="cc">float64</span>(lagBytes))
+    w.metrics.SlotLagSeconds.<span class="cf">Set</span>(<span class="cc">float64</span>(lagSecs))
+
+    over := lagBytes > w.maxLagBytes || lagSecs > w.maxLagSecs
+    <span class="ck">if</span> over {
+        w.log.<span class="cf">Error</span>(<span class="cs">"CRITICAL: replication slot lag exceeds threshold"</span>,
+            zap.<span class="cf">Int64</span>(<span class="cs">"lag_bytes"</span>, lagBytes),
+            zap.<span class="cf">Int64</span>(<span class="cs">"lag_secs"</span>, lagSecs),
+            zap.<span class="cf">String</span>(<span class="cs">"slot"</span>, w.slotName),
+        )
+        w.metrics.SlotLagAlerts.<span class="cf">Inc</span>()
+
+        <span class="ck">if</span> w.dropOnLimit {
+            w.log.<span class="cf">Error</span>(<span class="cs">"dropping replication slot to protect database"</span>)
+            w.<span class="cf">dropSlot</span>(ctx)  <span class="cm">// destructive — requires explicit config opt-in</span>
+        }
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-amber"></span> Prometheus Metrics</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Metric</th><th>Type</th><th>Description</th></tr>
+        <tr><td>walveil_events_total</td><td>Counter</td><td>Events decoded, labeled by table and op</td></tr>
+        <tr><td>walveil_delivery_total</td><td>Counter</td><td>Delivery attempts by sink and status</td></tr>
+        <tr><td>walveil_delivery_duration_seconds</td><td>Histogram</td><td>Sink delivery latency</td></tr>
+        <tr><td>walveil_slot_lag_bytes</td><td>Gauge</td><td>WAL lag in bytes (warden)</td></tr>
+        <tr><td>walveil_slot_lag_seconds</td><td>Gauge</td><td>WAL lag in seconds (warden)</td></tr>
+        <tr><td>walveil_slot_lag_alerts_total</td><td>Counter</td><td>Times lag threshold was exceeded</td></tr>
+        <tr><td>walveil_queue_depth</td><td>Gauge</td><td>Dispatcher queue current depth</td></tr>
+        <tr><td>walveil_reconnect_total</td><td>Counter</td><td>Replication reconnection attempts</td></tr>
+        <tr><td>walveil_lsn_confirmed</td><td>Gauge</td><td>Current confirmed LSN (as int64)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span> Health Endpoints</div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">/healthz</span>
+          <div class="step-content">
+            <div class="step-title">Liveness</div>
+            <div class="step-desc">Returns 200 if the process is alive. Never fails unless the process is dead.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">/readyz</span>
+          <div class="step-content">
+            <div class="step-title">Readiness</div>
+            <div class="step-desc">Returns 200 only when replication is active and sinks are reachable. 503 during startup or reconnect window.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span> Structured Logging (SEC-06)</div>
+      <div class="code-block"><code><span class="cm">// NEVER log row values at info or below</span>
+log.<span class="cf">Info</span>(<span class="cs">"event decoded"</span>,
+    zap.<span class="cf">String</span>(<span class="cs">"table"</span>, event.Table),
+    zap.<span class="cf">String</span>(<span class="cs">"op"</span>, event.Op),
+    <span class="cm">// NO event.After/Before here!</span>
+)
+
+<span class="cm">// Trace only — behind --log-level=trace</span>
+<span class="ck">if</span> log.<span class="cf">Level</span>() == zap.<span class="cc">DebugLevel</span> {
+    log.<span class="cf">Debug</span>(<span class="cs">"⚠ TRACE: row data"</span>,
+        zap.<span class="cf">Any</span>(<span class="cs">"after"</span>, <span class="cf">redact</span>(event.After)))
+}</code></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 4 -->
+<div class="section" id="phase4">
+  <div class="section-header">
+    <span class="phase-number ph-4">PHASE 4</span>
+    <div>
+      <div class="section-title">Security Hardening</div>
+      <div class="section-desc">Tighten every security control. TLS enforcement, secret resolution, privilege checks, and full column-level redaction.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-red"></span> TLS Enforcement (SEC-04)</div>
+    <p>Default <span class="ic">sslmode=verify-full</span> on the replication connection. Reject downgrades unless <span class="ic">allow_insecure_tls = true</span> is explicitly set in config with a loud startup warning. All webhook HTTP clients must use a <span class="ic">tls.Config</span> that enforces MinVersion <span class="ic">tls.VersionTLS12</span>.</p>
+    <div class="code-block"><code><span class="ck">func</span> <span class="cf">buildHTTPClient</span>(cfg <span class="cc">WebhookTarget</span>) *http.<span class="cc">Client</span> {
+    tlsCfg := &tls.<span class="cc">Config</span>{MinVersion: tls.<span class="cc">VersionTLS12</span>}
+    transport := &http.<span class="cc">Transport</span>{
+        DialContext:     <span class="cf">SafeDialer</span>().<span class="cf">DialContext</span>,  <span class="cm">// SSRF guard on every dial</span>
+        TLSClientConfig: tlsCfg,
+    }
+    <span class="ck">return</span> &http.<span class="cc">Client</span>{
+        Transport: transport,
+        Timeout:   time.<span class="cf">Duration</span>(cfg.TimeoutMs) * time.<span class="cc">Millisecond</span>,
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-red"></span> Privilege Check at Startup (SEC-09)</div>
+    <p>After connecting, verify the replication user is not a superuser. Log a loud warning and optionally fail if it is.</p>
+    <div class="code-block"><code><span class="ck">const</span> q = <span class="cs">`SELECT rolsuper FROM pg_roles WHERE rolname = current_user`</span>
+<span class="ck">var</span> isSuperuser <span class="cc">bool</span>
+<span class="cm">// ... query ...</span>
+<span class="ck">if</span> isSuperuser {
+    log.<span class="cf">Warn</span>(<span class="cs">"⚠ replication user has superuser privileges — principle of least privilege violated (SEC-09)"</span>)
+    <span class="ck">if</span> cfg.FailOnSuperuser {
+        <span class="ck">return</span> <span class="cf">fmt.Errorf</span>(<span class="cs">"refusing to run as superuser"</span>)
+    }
+}</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-red"></span> Column-Level Redaction (SEC-06)</div>
+    <p>The <span class="ic">redact_columns</span> config list is applied at the decoder level — before events reach any sink or logger. Format: <span class="ic">schema.table.column</span> or <span class="ic">*.*.column</span> for global redaction.</p>
+    <div class="code-block"><code><span class="ck">func</span> <span class="cf">applyRedaction</span>(event *<span class="cc">wal.ChangeEvent</span>, rules []<span class="cc">string</span>) {
+    <span class="ck">for</span> _, col := <span class="ck">range</span> rules {
+        parts := strings.<span class="cf">Split</span>(col, <span class="cs">"."</span>)
+        table, field := parts[0], parts[1]
+        <span class="ck">if</span> table == <span class="cs">"*"</span> || table == event.Table {
+            <span class="ck">if</span> event.After != <span class="ck">nil</span>  { event.After[field]  = <span class="cs">"[REDACTED]"</span> }
+            <span class="ck">if</span> event.Before != <span class="ck">nil</span> { event.Before[field] = <span class="cs">"[REDACTED]"</span> }
+        }
+    }
+}</code></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 5 -->
+<div class="section" id="phase5">
+  <div class="section-header">
+    <span class="phase-number ph-5">PHASE 5</span>
+    <div>
+      <div class="section-title">Production Readiness</div>
+      <div class="section-desc">Graceful shutdown, signal handling, Docker packaging, and integration test harness.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-purple"></span> Graceful Shutdown Sequence</div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Signal received (SIGTERM / SIGINT)</div>
+          <div class="step-desc">Cancel the root context. Stop accepting new WAL messages.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">Drain dispatcher queue</div>
+          <div class="step-desc">Wait for all in-flight events to be delivered and acknowledged. Bounded by <span class="ic">ShutdownTimeout</span> (default 30s).</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Flush checkpoint</div>
+          <div class="step-desc">Write the final confirmed LSN to the checkpoint file. This is the critical last step — do it before closing connections.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <div class="step-title">Send final StandbyStatusUpdate</div>
+          <div class="step-desc">Acknowledge the final LSN to Postgres before closing the replication connection.</div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <div class="step-content">
+          <div class="step-title">Close all connections and exit 0</div>
+          <div class="step-desc">Close replication conn, Redis client, HTTP client. Exit cleanly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-purple"></span> Dockerfile — Minimal, Non-Root</div>
+    <div class="code-block"><code><span class="ck">FROM</span> <span class="cs">golang:1.22-alpine AS builder</span>
+<span class="ck">WORKDIR</span> /src
+<span class="ck">COPY</span> . .
+<span class="ck">RUN</span> CGO_ENABLED=0 go build -ldflags="-s -w" -o walveil ./cmd/walveil
+
+<span class="ck">FROM</span> <span class="cs">scratch</span>
+<span class="ck">COPY</span> --from=builder /src/walveil /walveil
+<span class="ck">COPY</span> --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+<span class="ck">USER</span> 65532:65532   <span class="cm"># non-root</span>
+<span class="ck">ENTRYPOINT</span> ["/walveil"]</code></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-purple"></span> Integration Test Harness</div>
+    <ul class="checklist">
+      <li>Docker Compose: Postgres 15 with <span class="ic">wal_level=logical</span> + walveil + a mock webhook receiver</li>
+      <li>Test: INSERT → verify webhook received within 2s with correct HMAC signature</li>
+      <li>Test: UPDATE with REPLICA IDENTITY FULL → verify Before/After fields populated</li>
+      <li>Test: multi-statement transaction → verify events arrive as atomic batch</li>
+      <li>Test: kill walveil mid-stream → restart → verify no events lost or duplicated</li>
+      <li>Test: stall webhook for 60s → verify backpressure holds WAL on Postgres side</li>
+      <li>Test: webhook with private IP → verify SSRF guard rejects at startup</li>
+      <li>Test: corrupt checkpoint file → verify startup refuses with CRC error</li>
+    </ul>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PHASE 6 -->
+<div class="section" id="phase6">
+  <div class="section-header">
+    <span class="phase-number ph-6">PHASE 6</span>
+    <div>
+      <div class="section-title">Ecosystem &amp; Sinks</div>
+      <div class="section-desc">Additional sink implementations, schema registry integration, and CLI tooling.</div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-orange"></span> Kafka Sink</div>
+      <p>Use <span class="ic">kafka-go</span>. Topic per table (<span class="ic">walveil.schema.table</span>). Key = primary key as JSON bytes. Value = ChangeEvent JSON. TLS + SASL required.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-orange"></span> NATS JetStream Sink</div>
+      <p>Subject per table. Durable consumer on receiver side. Max bytes per stream configurable. Re-uses existing backpressure.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot dot-orange"></span> Pub/Sub Sink</div>
+      <p>Google Cloud Pub/Sub. Topic per table. Ordering keys = PK hash for partition-ordered delivery per row.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dot-orange"></span> walveil CLI Tooling</div>
+    <div class="code-block"><code><span class="cm"># Inspect replication slot status</span>
+walveil slot status --config walveil.toml
+
+<span class="cm"># Tail decoded events in terminal (for debugging)</span>
+walveil tail --config walveil.toml --table public.orders
+
+<span class="cm"># Validate config without connecting</span>
+walveil validate --config walveil.toml
+
+<span class="cm"># Reset checkpoint (emergency recovery)</span>
+walveil checkpoint reset --config walveil.toml --lsn 0/15D3AC8
+
+<span class="cm"># Show lag between current WAL and confirmed LSN</span>
+walveil slot lag --config walveil.toml</code></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- APPENDIX A -->
+<div class="section" id="appendix-a">
+  <div class="section-header">
+    <span class="phase-number" style="background:rgba(79,142,247,0.08);color:var(--text2);border:1px solid var(--border2)">APPENDIX A</span>
+    <div>
+      <div class="section-title">Patch Summary — All 7 + Bonus</div>
+      <div class="section-desc">Quick reference: where each non-negotiable patch lives in the implementation.</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>Patch</th><th>Phase</th><th>File</th><th>Risk Prevented</th></tr>
+      <tr>
+        <td>1</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">LSN Ack Correctness</td>
+        <td><span class="badge badge-blue">Phase 1</span></td>
+        <td><span class="ic">replication/stream.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Data loss on crash</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">Backpressure</td>
+        <td><span class="badge badge-green">Phase 2</span></td>
+        <td><span class="ic">delivery/dispatcher.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">OOM process death</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">Slot Control (Warden)</td>
+        <td><span class="badge badge-amber">Phase 3</span></td>
+        <td><span class="ic">warden/warden.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Database disk death</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">Transaction Boundaries</td>
+        <td><span class="badge badge-blue">Phase 1</span></td>
+        <td><span class="ic">replication/decoder.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Partial txn delivery / rollback races</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">System ID Verification</td>
+        <td><span class="badge badge-blue">Phase 1</span></td>
+        <td><span class="ic">replication/conn.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Cross-cluster corruption on failover</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">SSRF + DNS Protection</td>
+        <td><span class="badge badge-green">Phase 2</span></td>
+        <td><span class="ic">delivery/webhook/validate.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Credential theft via metadata endpoints</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td style="color:var(--text);font-family:var(--sans);font-size:0.8rem;font-weight:600;">Secrets Handling</td>
+        <td><span class="badge">Phase 0</span></td>
+        <td><span class="ic">config/secrets.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Accidental credential leaks in logs/errors</td>
+      </tr>
+      <tr>
+        <td>✦</td>
+        <td style="color:#f0abfc;font-family:var(--sans);font-size:0.8rem;font-weight:600;">Startup Validation (Bonus)</td>
+        <td><span class="badge">Phase 0</span></td>
+        <td><span class="ic">config/config.go</span></td>
+        <td style="font-family:var(--sans);font-size:0.78rem;">Orphaned slots from partial init</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- APPENDIX B -->
+<div class="section" id="appendix-b">
+  <div class="section-header">
+    <span class="phase-number" style="background:rgba(79,142,247,0.08);color:var(--text2);border:1px solid var(--border2)">APPENDIX B</span>
+    <div>
+      <div class="section-title">PostgreSQL Prerequisite Checklist</div>
+      <div class="section-desc">Everything the database needs before walveil can connect.</div>
+    </div>
+  </div>
+  <ul class="checklist">
+    <li><span class="ic">wal_level = logical</span> in <span class="ic">postgresql.conf</span> — requires restart. Verify with <span class="ic">SHOW wal_level</span> at startup.</li>
+    <li>Publication exists: <span class="ic">CREATE PUBLICATION walveil_pub FOR TABLE public.orders, public.users;</span></li>
+    <li>Replication user created with <span class="ic">REPLICATION</span> privilege only — NOT superuser (SEC-09)</li>
+    <li>Tables requiring old row values in UPDATE/DELETE have <span class="ic">REPLICA IDENTITY FULL</span> or <span class="ic">REPLICA IDENTITY USING INDEX</span></li>
+    <li>Replication user has <span class="ic">SELECT</span> on all tables in the publication</li>
+    <li>TLS configured on Postgres if using <span class="ic">sslmode=verify-full</span> (SEC-04)</li>
+    <li><span class="ic">max_replication_slots</span> has capacity for at least one additional slot</li>
+    <li><span class="ic">max_wal_senders</span> has capacity for the replication connection</li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<!-- APPENDIX C -->
+<div class="section" id="appendix-c">
+  <div class="section-header">
+    <span class="phase-number" style="background:rgba(79,142,247,0.08);color:var(--text2);border:1px solid var(--border2)">APPENDIX C</span>
+    <div>
+      <div class="section-title">ChangeEvent JSON Wire Format</div>
+      <div class="section-desc">The canonical payload shape delivered to every sink. This is the contract with downstream systems.</div>
+    </div>
+  </div>
+  <div class="code-block"><code>{
+  <span class="cs">"id"</span>: <span class="cs">"sha256:a1b2c3..."</span>,          <span class="cm">// deterministic: sha256(lsn+schema+table+xid)</span>
+  <span class="cs">"source"</span>: {
+    <span class="cs">"connector"</span>: <span class="cs">"walveil"</span>,
+    <span class="cs">"version"</span>: <span class="cs">"1.0.0"</span>,
+    <span class="cs">"db"</span>: <span class="cs">"myapp"</span>,
+    <span class="cs">"system_id"</span>: <span class="cs">"7344458708674735116"</span>,
+    <span class="cs">"slot_name"</span>: <span class="cs">"walveil_main"</span>
+  },
+  <span class="cs">"op"</span>: <span class="cs">"update"</span>,                   <span class="cm">// "insert" | "update" | "delete" | "truncate"</span>
+  <span class="cs">"schema"</span>: <span class="cs">"public"</span>,
+  <span class="cs">"table"</span>: <span class="cs">"orders"</span>,
+  <span class="cs">"lsn"</span>: <span class="cs">"0/15D3AC8"</span>,
+  <span class="cs">"xid"</span>: <span class="cn">12345</span>,
+  <span class="cs">"timestamp"</span>: <span class="cs">"2024-01-01T12:00:00Z"</span>,
+  <span class="cs">"pk"</span>: { <span class="cs">"id"</span>: <span class="cs">"order-uuid-123"</span> },
+  <span class="cs">"before"</span>: {                      <span class="cm">// present if REPLICA IDENTITY FULL</span>
+    <span class="cs">"id"</span>: <span class="cs">"order-uuid-123"</span>,
+    <span class="cs">"status"</span>: <span class="cs">"pending"</span>,
+    <span class="cs">"total"</span>: <span class="cn">99.99</span>
+  },
+  <span class="cs">"after"</span>: {
+    <span class="cs">"id"</span>: <span class="cs">"order-uuid-123"</span>,
+    <span class="cs">"status"</span>: <span class="cs">"shipped"</span>,
+    <span class="cs">"total"</span>: <span class="cn">99.99</span>
+  }
+}</code></div>
+</div>
+
+<footer>
+  <strong>walveil</strong> — complete build roadmap with all 7 patches + startup validation bonus &nbsp;·&nbsp; patches are non-negotiable
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
