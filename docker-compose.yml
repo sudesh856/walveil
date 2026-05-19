@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: walveil
+      POSTGRES_PASSWORD: walveil
+      POSTGRES_DB: walveil
+    command: >
+      postgres
+        -c wal_level=logical
+        -c max_replication_slots=10
+        -c max_wal_senders=10
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U walveil"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  walveil:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      WALVEIL_PG_DSN: "postgres://walveil:walveil@postgres:5432/walveil?replication=database"
+      WEBHOOK_SECRET: "dev-secret"
+      REDIS_ADDR: "redis:6379"
+    volumes:
+      - ./config/walveil.example.toml:/etc/walveil/walveil.toml:ro
+      - checkpoint_data:/data
+    ports:
+      - "9090:9090"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  webhook-receiver:
+    image: mendhak/http-https-echo:latest
+    ports:
+      - "8080:8080"
+
+volumes:
+  pg_data:
+  checkpoint_data:

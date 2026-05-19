@@ -1,0 +1,41 @@
+[source]
+dsn = "$WALVEIL_PG_DSN"
+slot_name = "walveil_main"
+publication_name = "walveil_pub"
+ssl_mode = "verify_full"
+ssl_root_cert = "/certs/pg-ca.crt"
+
+[source.slot]
+create_if_missing = true
+max_lag_bytes = 1073741824
+max_lagseconds = 300
+
+[filter]
+tables = ["public.orders", "public.users"]
+events = ["insert", "update", "delete"]
+redact_columns = ["users.password_hash", "users.email"]
+
+[[sinks]]
+type = "webhook"
+url = "https://mypp.com/events"
+secret = "$WEBHOOK_SECRET"
+timeout_ms = 5000
+max_retries = 5
+rate_limit_rps = 100
+
+[[sinks]]
+type = "redis"
+addr = "$REDIS_ADDR"
+stream_name = "walveil:changes"
+max_len = 100000
+
+[checkpoint]
+path = "/data/walveil.lsn"
+flush_interval_ms = 1000
+
+[server]
+addr = ":9090"
+
+[log]
+level = "info"
+format = "json"
