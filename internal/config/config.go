@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	"github.com/jackc/pgconn"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 type Config struct {
@@ -174,7 +174,7 @@ func (c *Config) Validate() error {
 	}
 
 	if c.Source.SSLRootCert != "" {
-		if _,err := os.Stat(c.Source.SSLRootCert); err != nil {
+		if _, err := os.Stat(c.Source.SSLRootCert); err != nil {
 			errs = append(errs, fmt.Sprintf("source.ssl_root_cert: %v", err))
 		}
 	}

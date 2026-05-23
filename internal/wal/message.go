@@ -1,6 +1,10 @@
 package wal
 
-import "time"
+import (
+	"time"
+
+	"github.com/jackc/pglogrepl"
+)
 
 type Op string
 
@@ -18,6 +22,7 @@ type ChangeEvent struct {
 	Schema    string         `json:"schema"`
 	Table     string         `json:"table"`
 	LSN       string         `json:"lsn"`
+	CommitLSN pglogrepl.LSN  `json:"commit_lsn"`
 	XID       uint32         `json:"xid"`
 	TimeStamp time.Time      `json:"timestamp"`
 	PK        map[string]any `json:"pk,omitempty"`
